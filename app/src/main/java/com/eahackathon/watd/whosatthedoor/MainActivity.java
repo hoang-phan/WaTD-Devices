@@ -1,9 +1,12 @@
 package com.eahackathon.watd.whosatthedoor;
 
+import android.app.KeyguardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import com.eahackathon.watd.whosatthedoor.helpers.GcmRegistrationHelper;
@@ -35,10 +38,13 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }).start();
-
             }
         });
-
-
+        if (BuildConfig.DEBUG) {
+            KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+            KeyguardManager.KeyguardLock keyguardLock = km.newKeyguardLock(MainActivity.class.getSimpleName());
+            keyguardLock.disableKeyguard();
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        }
     }
 }
