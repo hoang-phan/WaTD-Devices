@@ -47,21 +47,25 @@ public class GcmRegistrationHelper {
 
     public void register() throws IOException {
         if (checkPlayService()) {
-            String registerId = GoogleCloudMessaging.getInstance(mActivity).register("120607825117");
-            Call<ResponseModel> call = APIService.getInstance().createGcmKey(new CreateGcmKeyRequest(getDeviceId(), registerId));
-            call.enqueue(new Callback<ResponseModel>() {
-                @Override
-                public void onResponse(Response<ResponseModel> response, Retrofit retrofit) {
-                    Log.e("register GCM", "success");
-                }
-
-                @Override
-                public void onFailure(Throwable t) {
-                    Log.e("register GCM", "failed");
-
-                }
-            });
+            doRegister();
         }
+    }
+
+    public void doRegister() throws IOException {
+        String registerId = GoogleCloudMessaging.getInstance(mActivity).register("120607825117");
+        Call<ResponseModel> call = APIService.getInstance().createGcmKey(new CreateGcmKeyRequest(getDeviceId(), registerId));
+        call.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Response<ResponseModel> response, Retrofit retrofit) {
+                Log.e("register GCM", "success");
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("register GCM", "failed");
+
+            }
+        });
     }
 
     private boolean checkPlayService() {

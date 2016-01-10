@@ -37,13 +37,10 @@ public class GcmRegistrationHelperTest {
         WaTDAPI mockWaTDAPI = mock(WaTDAPI.class);
         APIService.setInstance(mockWaTDAPI);
         Call<ResponseModel> mockCall = mock(Call.class);
-        ArgumentCaptor<Callback> callbackCaptor = ArgumentCaptor.forClass(Callback.class);
         when(mockWaTDAPI.createGcmKey(any(CreateGcmKeyRequest.class))).thenReturn(mockCall);
-        GcmRegistrationHelper.getInstance().register();
+        GcmRegistrationHelper.getInstance().doRegister();
         Thread.sleep(3000);
-        verify(mockCall).enqueue(callbackCaptor.capture());
-        callbackCaptor.getValue().onFailure(null);
-        callbackCaptor.getValue().onResponse(null, null);
+        verify(mockCall).enqueue(any(Callback.class));
     }
 }
 
