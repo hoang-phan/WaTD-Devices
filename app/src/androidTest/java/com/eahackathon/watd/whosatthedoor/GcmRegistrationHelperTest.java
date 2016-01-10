@@ -27,20 +27,20 @@ import static org.mockito.Mockito.when;
  */
 public class GcmRegistrationHelperTest {
 
-    @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
-
-
-    @Test
-    public void testGcmRegistrationHelper_test() throws IOException, InterruptedException {
-        GcmRegistrationHelper.getInstance().setActivity(mActivityTestRule.getActivity());
-        WaTDAPI mockWaTDAPI = mock(WaTDAPI.class);
-        APIService.setInstance(mockWaTDAPI);
-        Call<ResponseModel> mockCall = mock(Call.class);
-        when(mockWaTDAPI.createGcmKey(any(CreateGcmKeyRequest.class))).thenReturn(mockCall);
-        GcmRegistrationHelper.getInstance().doRegister();
-        Thread.sleep(3000);
-        verify(mockCall).enqueue(any(Callback.class));
-    }
+//    @Rule
+//    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+//
+//
+//    @Test
+//    public void testGcmRegistrationHelper_test() throws IOException, InterruptedException {
+//        GcmRegistrationHelper.getInstance().setActivity(mActivityTestRule.getActivity());
+//        WaTDAPI mockWaTDAPI = mock(WaTDAPI.class);
+//        APIService.setInstance(mockWaTDAPI);
+//        Call<ResponseModel> mockCall = mock(Call.class);
+//        when(mockWaTDAPI.createGcmKey(any(CreateGcmKeyRequest.class))).thenReturn(mockCall);
+//        GcmRegistrationHelper.getInstance().doRegister();
+//        Thread.sleep(3000);
+//        verify(mockCall).enqueue(any(Callback.class));
+//    }
 }
 
