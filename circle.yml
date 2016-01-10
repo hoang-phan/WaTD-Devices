@@ -1,8 +1,23 @@
 machine:
- environment:
-  APP_HOME : /home/ubuntu/WaTD-Devices
+  environment:
+    APP_HOME : /home/ubuntu/WaTD-Devices
+    ADB_INSTALL_TIMEOUT : 40
 dependencies:
- pre:
-  - echo y | android update sdk --no-ui --all --filter "build-tools-23.0.1"
-  - chmod +x $APP_HOME/gradlew
- 
+  pre:
+    - echo y | sudo /usr/local/android-sdk-linux/tools/android update sdk --no-ui --all --filter extra-android-m2repository,extra-android-support,extra-google-google_play_services,extra-google-m2repository
+    - chmod +x $APP_HOME/gradlew
+test:
+  override:
+    - emulator -avd circleci-android22 -netdelay none -netspeed full -no-audio:
+        background: true
+        parallel: true
+    - circle-android wait-for-boot
+    - sleep 60
+    - ./gradlew jacocoTestReport -PdisablePreDex:
+        timeout: 2400
+  post:
+    - cp -r $APP_HOME/app/build/reports/* $CIRCLE_ARTIFACTS
+    # copy the build outputs to artifacts
+    - cp -r $APP_HOME/app/build/outputs $CIRCLE_ARTIFACTS
+    # copy the test results to the test results directory.
+    - cp -r $APP_HOME/app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
